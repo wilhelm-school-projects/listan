@@ -12,22 +12,22 @@ public:
     List(std::initializer_list<int>);
 
     List & operator=(List const &)&;
-    List & operator=(List &&)&;
+    List & operator=(List &&)& noexcept;
 
     void push_front(int);
     void push_back(int);
 
-    int back() const;
-    int & back();
+    int back() const noexcept;
+    int & back() noexcept;
 
-    int front() const;
-    int & front();
+    int front() const noexcept;
+    int & front() noexcept;
 
     int & at(int idx);
     int const & at(int idx) const;
 
-    int size() const;
-    bool empty() const;
+    int size() const noexcept;
+    bool empty() const noexcept;
 
     void swap(List & other) noexcept;
 private:

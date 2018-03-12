@@ -14,14 +14,16 @@ struct List::Node
 };
 
 List::List()
-    : head{ new Node{} }, tail{head}, sz{}
-{}
+    : head{ new Node{} }, tail{}, sz{}
+{
+    head->next = new Node{0, head, nullptr};
+    tail = head->next;
+}
 
 List::List(List const & other)
     : List{}
 {
-    Node * tmp = other.head;
-    while ( tmp != other.tail )
+    for (Node * tmp {other.head->next}; tmp != other.tail ; )
     {
         push_back(tmp->value);
         tmp = tmp->next;
@@ -43,59 +45,51 @@ List::List(std::initializer_list<int> lst)
 
 void List::push_front(int value)
 {
-    head = new Node{value, nullptr, head};
-    if ( sz == 0 )
-    {
-        tail->prev = head;
-    }
+    Node * old_first { head->next };
+    head->next = new Node{value, head, head->next};
+    old_first->prev = head->next;
     ++sz;
 }
 void List::push_back(int value)
 {
-    if ( empty() )
-    {
-        push_front(value);
-    }
-    else
-    {
-        tail->prev->next = new Node{value, tail->prev, tail};
-        tail->prev = tail->prev->next;
-        ++sz;
-    }
+    Node * old_last { tail->prev };
+    old_last->next = new Node{value, old_last, tail};
+    tail->prev = old_last->next;
+    ++sz;
 }
 
-bool List::empty() const
+bool List::empty() const noexcept
 {
-    return head == tail;
+    return head->next == tail;
 }
 
-int List::back() const
+int List::back() const noexcept
 {
     return tail->prev->value;
 }
-int & List::back()
+int & List::back() noexcept
 {
     return tail->prev->value;
 }
 
-int List::front() const
+int List::front() const noexcept
 {
-    return head->value;
+    return head->next->value;
 }
-int & List::front()
+int & List::front() noexcept
 {
-    return head->value;
+    return head->next->value;
 }
 
 int & List::at(int idx)
 {
-    return const_cast<int &>(static_cast<List const &>(*this).at(idx));
+    return const_cast<int &>(static_cast<List const *>(this)->at(idx));
 }
 int const & List::at(int idx) const
 {
     if (idx >= sz)
         throw std::out_of_range{"Index not found"};
-    Node * tmp {head};
+    Node * tmp {head->next};
     while ( idx > 0 )
     {
         tmp = tmp->next;
@@ -104,7 +98,7 @@ int const & List::at(int idx) const
     return tmp->value;
 }
 
-int List::size() const
+int List::size() const noexcept
 {
     return sz;
 }
@@ -123,7 +117,7 @@ List & List::operator=(List const & rhs) &
     return *this;
 }
 
-List & List::operator=(List && rhs) &
+List & List::operator=(List && rhs)& noexcept
 {
     swap(rhs);
     return *this;
