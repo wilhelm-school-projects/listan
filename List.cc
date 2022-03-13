@@ -2,31 +2,22 @@
 #include <iterator>
 #include <utility>
 #include <stdexcept>
-
-struct List::Node
-{
-    Node() = default;
-    Node(int v, Node* p, Node* n)
-        : value{v}, prev{p}, next{n} {}
-    int value {};
-    Node * prev {};
-    Node * next {};
-};
+#include <memory>
 
 List::List()
-    : head{ new Node{} }, tail{}, sz{}
+    : head{ std::make_unique<Node>() }, tail{}, sz{}
 {
-    head->next = new Node{0, head, nullptr};
-    tail = head->next;
+    head->next = std::make_unique<Node>(0, head.get(), nullptr); 
+    tail = head->next.get();
 }
 
 List::List(List const & other)
     : List{}
 {
-    for (Node * tmp {other.head->next}; tmp != other.tail ; )
+    for (Node * tmp {other.head->next.get()}; tmp != other.tail ; )
     {
         push_back(tmp->value);
-        tmp = tmp->next;
+        tmp = tmp->next.get();
     }
 }
 List::List(List && tmp) noexcept
@@ -45,22 +36,22 @@ List::List(std::initializer_list<int> lst)
 
 void List::push_front(int value)
 {
-    Node * old_first { head->next };
-    head->next = new Node{value, head, head->next};
-    old_first->prev = head->next;
+    Node * old_first { head->next.get() };
+    head->next = std::make_unique<Node>(value, head.get(), head->next.release());
+    old_first->prev = head->next.get();
     ++sz;
 }
 void List::push_back(int value)
 {
     Node * old_last { tail->prev };
-    old_last->next = new Node{value, old_last, tail};
-    tail->prev = old_last->next;
+    old_last->next = std::make_unique<Node>(value, old_last, tail);
+    tail->prev = old_last->next.get();
     ++sz;
 }
 
 bool List::empty() const noexcept
 {
-    return head->next == tail;
+    return head->next.get() == tail;
 }
 
 int List::back() const noexcept
@@ -89,10 +80,10 @@ int const & List::at(int idx) const
 {
     if (idx >= sz)
         throw std::out_of_range{"Index not found"};
-    Node * tmp {head->next};
+    Node * tmp {head->next.get()};
     while ( idx > 0 )
     {
-        tmp = tmp->next;
+        tmp = tmp->next.get();
         --idx;
     }
     return tmp->value;
@@ -111,11 +102,11 @@ void List::swap(List & other) noexcept
     swap(sz, other.sz);
 }
 
-List & List::operator=(List const & rhs) &
+List & List::operator=(List const & rhs) & // Vad betyder denna &?
 {
-    List{rhs}.swap(*this);
-    return *this;
-}
+    List{rhs}.swap(*this);      // Skapar en temporär List med samma innehåll som rhs.
+    return *this;               // Anropar swap och skickar med *this för att ge denna, vad 
+}                               // den temporära listan innehåller.
 
 List & List::operator=(List && rhs)& noexcept
 {

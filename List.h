@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <initializer_list>
+#include <memory>
 
 class List
 {
@@ -31,10 +32,20 @@ public:
 
     void swap(List & other) noexcept;
 private:
-    struct Node;
-    Node * head {};
-    Node * tail {};
-    int sz {};
+    struct Node                             // Jag behövde slänga in denna här för att lyckas göra head till en
+    {                                       // unique_ptr av Node, hur kommer sig det?
+        Node() = default;
+        Node(int v, Node* p, Node* n)
+            : value{v}, prev{p}, next{n} 
+        {
+        }
+        int value;
+        Node * prev;
+        std::unique_ptr<Node> next;
+    };
+    std::unique_ptr<Node> head;
+    Node* tail;
+    int sz;
 };
 
 #endif //LIST_H

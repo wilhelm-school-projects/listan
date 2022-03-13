@@ -1,0 +1,20 @@
+• Hur många noder har en tom lista?
+    - Två noder. 
+
+• Var läggs ett element när det stoppas in först?
+    - Efter heads sentinel node.
+
+• Var läggs ett element när det stoppas in sist?
+    - Före tails sentinel node.
+
+• Det finns två at-funktioner, varför?
+    - Eftersom den returnar const& får vi alltså tillbaka referensen till ett värde
+      så inte onödig kopiering sker och man kommer inte kunna ändra värde på denna eftersom det är const.
+
+    - Vill vi kunna ändra på ett värde i listan behöver int& returneras.
+
+• Hur fungerar egentligen icke-const versionen av at?
+    - this (som är en pekare till detta objekt) omvandlas till en konstant pekare till detta objekt istället.
+      Därefter anropas funktionen at med idx som parameter och eftersom this nu är constant så kommer även 
+      den konstanta versionen av funktionen at att anropas (hade this inte varit konstant hade oändlig rekursion uppstått).
+      Eftersom det värde vi får tillbaka är konstant, behöver vi omvandla den till en icke-konstant reference, därav const_cast<int &>.
