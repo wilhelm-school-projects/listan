@@ -41,9 +41,11 @@ void List::push_front(int value)
     old_first->prev = head->next.get();
     ++sz;
 }
+
 void List::push_back(int value)
 {
-    Node * old_last { tail->prev };
+    Node * old_last { tail->prev };    
+    old_last->next.release();    
     old_last->next = std::make_unique<Node>(value, old_last, tail);
     tail->prev = old_last->next.get();
     ++sz;
@@ -113,8 +115,7 @@ List & List::operator=(List && rhs)& noexcept
     swap(rhs);
     return *this;
 }
-
-// TODO:    
+    
 List::List_Iterator List::begin()
 {
     return List::List_Iterator{head->next.get()};
@@ -128,11 +129,23 @@ List::List_Iterator List::end()
 /* List_Iterator */
 
 List::List_Iterator::List_Iterator(Node* const& node_ptr)
-    : current{node_ptr}
+    : curr_ptr{node_ptr}
 {
 }
 
+List::List_Iterator::value_type& List::List_Iterator::operator*()
+{
+    return curr_ptr->value;
+}
 
+bool List::List_Iterator::operator==(List::List_Iterator const& rhs)
+{
+    return curr_ptr == rhs.curr_ptr;
+}
+bool List::List_Iterator::operator!=(List::List_Iterator const& rhs)
+{
+    return !(*this == rhs);
+}
 
 
 

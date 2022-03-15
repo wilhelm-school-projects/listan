@@ -35,6 +35,10 @@ private:
     struct Node                             // Jag behövde slänga in denna här för att lyckas göra head till en
     {                                       // unique_ptr av Node, hur kommer sig det?
         Node() = default;
+        Node(int v, Node* p)            // Överflödig?
+            : value{v}, prev{p}, next{} 
+        {
+        }
         Node(int v, Node* p, Node* n)
             : value{v}, prev{p}, next{n} 
         {

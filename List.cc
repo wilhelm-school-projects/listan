@@ -41,9 +41,11 @@ void List::push_front(int value)
     old_first->prev = head->next.get();
     ++sz;
 }
+
 void List::push_back(int value)
 {
-    Node * old_last { tail->prev };
+    Node * old_last { tail->prev };    
+    old_last->next.release();    
     old_last->next = std::make_unique<Node>(value, old_last, tail);
     tail->prev = old_last->next.get();
     ++sz;

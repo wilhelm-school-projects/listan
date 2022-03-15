@@ -1,5 +1,6 @@
 
-#include "List.h"
+//#include "List.h"
+#include "List_it.h"
 
 #include "catch.hpp"
 
@@ -13,7 +14,8 @@ TEST_CASE( "Create list" )
     CHECK(l2.size() == lst.size());
     CHECK(l2.front() == lst.front());
     CHECK(l2.back() == lst.back());
-}
+} 
+
 TEST_CASE( "Copy constructor" )
 {
     List lst1{1,4,2};
@@ -110,8 +112,27 @@ TEST_CASE( "Move assignment " )
     CHECK(list2.at(0) == 1);
     CHECK(list2.at(1) == 2);
 }
+/* Iterator tests */
 
+TEST_CASE( "begin/end" )
+{
+    List lst{1,4,2,6,8,9};
+    auto it {lst.begin()};
+    *it = 3; 
+    CHECK(*lst.begin() == 3);
+    CHECK(*lst.end() == 0); 
+}
 
+TEST_CASE( "Equal/not equal" )
+{
+    List lst {1,4,2,6,8,9};
+    auto it1 {lst.begin()};
+    auto it2 {lst.begin()};
+    auto it3 {lst.end()};
+
+    CHECK(it1 == it2);
+    CHECK(it1 != it3);
+}
 
 
 

@@ -40,10 +40,8 @@ private:
         bool operator==(List_Iterator const& rhs);
         bool operator!=(List_Iterator const& rhs);
 
-
     private:
-        Node* current;
-
+        Node* curr_ptr;
     };
 
 public:
