@@ -107,7 +107,7 @@ void List::swap(List & other) noexcept
 List & List::operator=(List const & rhs) & // Vad betyder denna &?
 {
     List{rhs}.swap(*this);      // Skapar en temporär List med samma innehåll som rhs.
-    return *this;               // Anropar swap och skickar med *this för att ge denna, vad 
+    return *this;               // Anropar swap och skickar med *this för att ge denna vad 
 }                               // den temporära listan innehåller.
 
 List & List::operator=(List && rhs)& noexcept
@@ -145,6 +145,30 @@ bool List::List_Iterator::operator==(List::List_Iterator const& rhs)
 bool List::List_Iterator::operator!=(List::List_Iterator const& rhs)
 {
     return !(*this == rhs);
+}
+
+List::List_Iterator& List::List_Iterator::operator++()      // pre
+{
+    this->curr_ptr = this->curr_ptr->next.get();
+    return *this;                                           
+}     
+List::List_Iterator List::List_Iterator::operator++(int)    // post
+{
+    List::List_Iterator old{*this};
+    operator++();
+    return old;
+}
+
+List::List_Iterator& List::List_Iterator::operator--()
+{
+    this->curr_ptr = this->curr_ptr->prev;
+    return *this;      
+}
+List::List_Iterator List::List_Iterator::operator--(int)
+{
+    List::List_Iterator old{*this};
+    operator--();
+    return old;
 }
 
 

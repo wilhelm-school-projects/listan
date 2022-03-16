@@ -26,10 +26,10 @@ private:
         List_Iterator(Node* const& node_ptr);
         typedef std::bidirectional_iterator_tag iterator_category;
         typedef int                             value_type;
-        typedef int                             difference_type;
-        typedef value_type&                     pointer;
+        typedef value_type                      difference_type;
+        typedef value_type*                     pointer;
+        typedef value_type&                     reference;
 
-        // TODO:
         List_Iterator& operator++();     //pre
         List_Iterator operator++(int);   //post
         List_Iterator& operator--();

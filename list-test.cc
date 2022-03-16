@@ -3,6 +3,10 @@
 #include "List_it.h"
 
 #include "catch.hpp"
+#include <iterator>
+#include <iostream>
+
+using namespace std;
 
 TEST_CASE( "Create list" )
 {
@@ -112,6 +116,7 @@ TEST_CASE( "Move assignment " )
     CHECK(list2.at(0) == 1);
     CHECK(list2.at(1) == 2);
 }
+
 /* Iterator tests */
 
 TEST_CASE( "begin/end" )
@@ -134,7 +139,38 @@ TEST_CASE( "Equal/not equal" )
     CHECK(it1 != it3);
 }
 
+TEST_CASE( "pre/post increment" )
+{
+    List lst {1,4,2,6,8,9};
+    auto it{lst.begin()};
 
+    CHECK(*(it++) == 1);    
+    CHECK(*it == 4);
+    CHECK(*(++it) == 2);    
+}
+
+TEST_CASE( "pre/post decrement" )
+{
+    List lst {1,4,2,6,8,9};
+    auto it{lst.end()};
+
+    CHECK(*(it--) == 0);    
+    CHECK(*it == 9);
+    CHECK(*(--it) == 8);    
+}
+
+
+TEST_CASE( "reversed iterations" )                  // Hur fungerar denna?
+{
+    List lst{2,3,1,5};
+    auto rb { make_reverse_iterator(lst.end()) };       
+    auto re { make_reverse_iterator(lst.begin()) };
+    for ( auto it = rb; it != re; ++it )
+    {
+        cout << *it << ' ';
+    }
+
+}
 
 
 
