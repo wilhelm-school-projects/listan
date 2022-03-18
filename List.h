@@ -52,4 +52,6 @@ private:
     int sz;
 };
 
+#include "List.cc"
+
 #endif //LIST_H
