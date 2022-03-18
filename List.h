@@ -4,28 +4,29 @@
 #include <initializer_list>
 #include <memory>
 
+template<typename T>
 class List
 {
 public:
     List();
     List(List const &);
     List(List &&) noexcept;
-    List(std::initializer_list<int>);
+    List(std::initializer_list<T>);
 
-    List & operator=(List const &)&;
-    List & operator=(List &&)& noexcept;
+    List & operator=(List const &)&;        // Borde jag inte behöva skriva List<T> som returtyp 
+    List & operator=(List &&)& noexcept;    // som jag är tvungen att göra i .tcc filen?  
 
-    void push_front(int);
-    void push_back(int);
+    void push_front(T);
+    void push_back(T);
 
-    int back() const noexcept;
-    int & back() noexcept;
+    T back() const noexcept;
+    T & back() noexcept;
 
-    int front() const noexcept;
-    int & front() noexcept;
+    T front() const noexcept;
+    T & front() noexcept;
 
-    int & at(int idx);
-    int const & at(int idx) const;
+    T & at(int idx);
+    T const & at(int idx) const;
 
     int size() const noexcept;
     bool empty() const noexcept;
@@ -35,15 +36,15 @@ private:
     struct Node                             // Jag behövde slänga in denna här för att lyckas göra head till en
     {                                       // unique_ptr av Node, hur kommer sig det?
         Node() = default;
-        Node(int v, Node* p)            // Överflödig?
-            : value{v}, prev{p}, next{} 
+        Node(Node* p, Node* n)            // Överflödig?
+            : value{}, prev{p}, next{} 
         {
         }
-        Node(int v, Node* p, Node* n)
+        Node(T v, Node* p, Node* n)
             : value{v}, prev{p}, next{n} 
         {
         }
-        int value;
+        T value;
         Node * prev;
         std::unique_ptr<Node> next;
     };
@@ -52,6 +53,6 @@ private:
     int sz;
 };
 
-#include "List.cc"
+#include "List.tcc"
 
 #endif //LIST_H
