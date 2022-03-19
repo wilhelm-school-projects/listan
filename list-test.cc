@@ -1,6 +1,5 @@
 
 #include "List.h"
-//#include "List_it.h"
 
 #include "catch.hpp"
 #include <iterator>
@@ -8,13 +7,14 @@
 #include <string>
 
 using namespace std;
+using namespace List_NS;
 
 TEST_CASE( "Not integer type" )
 {
-    List<string> lst{"cpp", "är", "kul"};
+    List_NS::List<string> lst{"cpp", "är", "kul"};
     CHECK(lst.at(2) == "kul");
     CHECK(lst.size() == 3);
-    List<string> l2;
+    List_NS::List<string> l2;
     l2 = lst;
     CHECK(l2.size() == lst.size());
     CHECK(l2.front() == lst.front());
@@ -130,62 +130,67 @@ TEST_CASE( "Move assignment " )
     CHECK(list2.at(1) == 2);
 }
 
-// /* Iterator tests */
+/* Iterator tests */
 
-// TEST_CASE( "begin/end" )
-// {
-//     List lst{1,4,2,6,8,9};
-//     auto it {lst.begin()};
-//     *it = 3; 
-//     CHECK(*lst.begin() == 3);
-//     CHECK(*lst.end() == 0); 
-// }
+TEST_CASE( "begin/end" )
+{
+    List<int> lst{1,4,2,6,8,9};
+    auto it {lst.begin()};
+    *it = 3; 
+    CHECK(*lst.begin() == 3);
+    CHECK(*lst.end() == 0); 
+}
 
-// TEST_CASE( "Equal/not equal" )
-// {
-//     List lst {1,4,2,6,8,9};
-//     auto it1 {lst.begin()};
-//     auto it2 {lst.begin()};
-//     auto it3 {lst.end()};
+TEST_CASE( "Equal/not equal" )
+{
+    List<int> lst {1,4,2,6,8,9};
+    auto it1 {lst.begin()};
+    auto it2 {lst.begin()};
+    auto it3 {lst.end()};
 
-//     CHECK(it1 == it2);
-//     CHECK(it1 != it3);
-// }
+    CHECK(it1 == it2);
+    CHECK(it1 != it3);
+}
 
-// TEST_CASE( "pre/post increment" )
-// {
-//     List lst {1,4,2,6,8,9};
-//     auto it{lst.begin()};
+TEST_CASE( "pre/post increment" )
+{
+    List<int> lst {1,4,2,6,8,9};
+    auto it{lst.begin()};
 
-//     CHECK(*(it++) == 1);    
-//     CHECK(*it == 4);
-//     CHECK(*(++it) == 2);    
-// }
+    CHECK(*(it++) == 1);    
+    CHECK(*it == 4);
+    CHECK(*(++it) == 2);    
+}
 
-// TEST_CASE( "pre/post decrement" )
-// {
-//     List lst {1,4,2,6,8,9};
-//     auto it{lst.end()};
+TEST_CASE( "pre/post decrement" )
+{
+    List<int> lst {1,4,2,6,8,9};
+    auto it{lst.end()};
 
-//     CHECK(*(it--) == 0);    
-//     CHECK(*it == 9);
-//     CHECK(*(--it) == 8);    
-// }
+    CHECK(*(it--) == 0);    
+    CHECK(*it == 9);
+    CHECK(*(--it) == 8);    
+}
 
+TEST_CASE( "operator->" )
+{
+    List<std::string> lst {"ord", "består", "av", "bokstäver"};
+    auto it{lst.begin()};
+    CHECK(it->size() == 3);
+}
 
-// TEST_CASE( "reversed iterations" )                  // Hur fungerar denna?
-// {
-//     List lst{2,3,1,5};
-//     auto rb { make_reverse_iterator(lst.end()) };       
-//     auto re { make_reverse_iterator(lst.begin()) };
-//     for ( auto it = rb; it != re; ++it )
-//     {
-//         cout << *it << ' ';
-//     }
+TEST_CASE( "reversed iterations" )                  // Hur fungerar denna?
+{
+    List<int> lst{2,3,1,5};
+    auto rb { make_reverse_iterator(lst.end()) };       
+    auto re { make_reverse_iterator(lst.begin()) };
+    for ( auto it = rb; it != re; ++it )
+    {
+        cout << *it << ' ';
+    }
 
-// }
+}
 
-/* template tests */
 
 
 
