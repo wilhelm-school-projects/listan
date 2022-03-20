@@ -14,7 +14,7 @@ namespace List_NS
         {                                       // unique_ptr av Node, hur kommer sig det?
             Node() = default;
             Node(Node* p, Node* n)            
-                : value{}, prev{p}, next{} 
+                : value{}, prev{p}, next{n} 
             {
             }
             Node(T v, Node* p, Node* n)
