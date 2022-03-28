@@ -17,7 +17,7 @@ namespace List_NS
                 : value{}, prev{p}, next{n} 
             {
             }
-            Node(T v, Node* p, Node* n)
+            Node(T v, Node* p, Node* n) // ta in uniqueptr
                 : value{v}, prev{p}, next{n} 
             {
             }
@@ -32,8 +32,8 @@ namespace List_NS
             List_Iterator(Node* const& node_ptr);
             typedef std::bidirectional_iterator_tag iterator_category;
             typedef T                               value_type;
-            typedef value_type                      difference_type;
-            typedef value_type*                     pointer;
+            typedef value_type                      difference_type;    // Använd using istället
+            typedef value_type*                     pointer;            // difference_type int eller void
             typedef value_type&                     reference;
 
             List_Iterator& operator++();     //pre
@@ -44,8 +44,8 @@ namespace List_NS
             reference operator*();
             pointer operator->();
             
-            bool operator==(List_Iterator const& rhs);
-            bool operator!=(List_Iterator const& rhs);
+            bool operator==(List_Iterator const& rhs) const;
+            bool operator!=(List_Iterator const& rhs) const;
 
         private:
             Node* curr_ptr;
@@ -60,8 +60,8 @@ namespace List_NS
         List & operator=(List const &)&;        // Borde jag inte behöva skriva List<T> som returtyp 
         List & operator=(List &&)& noexcept;    // som jag är tvungen att göra i .tcc filen?  
 
-        void push_front(T);
-        void push_back(T);
+        void push_front(T const&);
+        void push_back(T const&);
 
         T back() const noexcept;
         T & back() noexcept;
@@ -77,7 +77,7 @@ namespace List_NS
 
         void swap(List & other) noexcept;
 
-        List_Iterator begin();  //returna List_Iterator& ?
+        List_Iterator begin();
         List_Iterator end();
 
     private:
