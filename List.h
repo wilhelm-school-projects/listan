@@ -10,8 +10,8 @@ namespace List_NS
     class List
     {
     private:
-        struct Node                             // Jag behövde slänga in denna här för att lyckas göra head till en
-        {                                       // unique_ptr av Node, hur kommer sig det?
+        struct Node                             
+        {                                       
             Node() = default;
             Node(Node* p, Node* n)            
                 : value{}, prev{p}, next{n} 
@@ -26,9 +26,9 @@ namespace List_NS
             std::unique_ptr<Node> next;
         };
 
-        class List_Iterator         // Jag kunde inte "fördeklarera" (class List_Iterator;) i
-        {                           // Den publika delen och sedan lägga denna i private delen
-        public:                     // när den private delen låg under den publika, varför?
+        class List_Iterator         
+        {                           
+        public:                     
             List_Iterator(Node* const& node_ptr);
             typedef std::bidirectional_iterator_tag iterator_category;
             typedef T                               value_type;
@@ -36,8 +36,8 @@ namespace List_NS
             typedef value_type*                     pointer;
             typedef value_type&                     reference;
 
-            List_Iterator& operator++();     //pre
-            List_Iterator operator++(int);   //post
+            List_Iterator& operator++();     // pre
+            List_Iterator operator++(int);   // post
             List_Iterator& operator--();
             List_Iterator operator--(int);
             
@@ -57,8 +57,8 @@ namespace List_NS
         List(List &&) noexcept;
         List(std::initializer_list<T>);
 
-        List & operator=(List const &)&;        // Borde jag inte behöva skriva List<T> som returtyp 
-        List & operator=(List &&)& noexcept;    // som jag är tvungen att göra i .tcc filen?  
+        List & operator=(List const &)&;        
+        List & operator=(List &&)& noexcept;    
 
         void push_front(T);
         void push_back(T);
@@ -77,7 +77,7 @@ namespace List_NS
 
         void swap(List & other) noexcept;
 
-        List_Iterator begin();  //returna List_Iterator& ?
+        List_Iterator begin();  
         List_Iterator end();
 
     private:

@@ -179,7 +179,7 @@ TEST_CASE( "operator->" )
     CHECK(it->size() == 3);
 }
 
-TEST_CASE( "reversed iterations" )                  // Hur fungerar denna?
+TEST_CASE( "reversed iterations" )                  
 {
     List<int> lst{2,3,1,5};
     auto rb { make_reverse_iterator(lst.end()) };       

@@ -9,12 +9,12 @@ namespace List_NS
     List<T>::List()
         : head{ std::make_unique<Node>() }, tail{}, sz{}
     {
-        head->next = std::make_unique<Node>(head.get(), nullptr);   // Jag tog bort så slut-sentinel noden 
-        tail = head->next.get();                                    // inte initieras med 0 längre för detta krånglade med 
-    }                                                               // templates, är det rätt sätt att göra?
+        head->next = std::make_unique<Node>(head.get(), nullptr);   
+        tail = head->next.get();                                    
+    }                                                              
 
     template<typename T>
-    List<T>::List(List const & other)   // Borde jag inte behöva skriva List<T> i parameterlistan också?
+    List<T>::List(List const & other)  
         : List{}
     {
         for (Node * tmp {other.head->next.get()}; tmp != other.tail ; )
@@ -121,11 +121,11 @@ namespace List_NS
     }
 
     template<typename T>
-    List<T> & List<T>::operator=(List const & rhs) & // Vad betyder denna &?
+    List<T> & List<T>::operator=(List const & rhs) & 
     {
-        List{rhs}.swap(*this);      // Skapar en temporär List med samma innehåll som rhs.
-        return *this;               // Anropar swap och skickar med *this för att ge denna, vad 
-    }                               // den temporära listan innehåller.
+        List{rhs}.swap(*this);      
+        return *this;              
+    }                               
 
     template<typename T>
     List<T> & List<T>::operator=(List && rhs)& noexcept
@@ -195,8 +195,8 @@ namespace List_NS
     }
 
     template<typename T>
-    typename List<T>::List_Iterator::value_type& List<T>::List_Iterator::operator*()    // Varför krävs dessa typename 
-    {                                                                                   // innan returtypen?
+    typename List<T>::List_Iterator::value_type& List<T>::List_Iterator::operator*()    
+    {                                                                                   
         return curr_ptr->value;
     }
 
