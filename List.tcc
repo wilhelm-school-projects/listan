@@ -1,4 +1,3 @@
-#include "List.h"
 #include <iterator>
 #include <utility>
 #include <stdexcept>
@@ -33,23 +32,23 @@ namespace List_NS
     List<T>::List(std::initializer_list<T> lst)
         : List{}
     {
-        for ( auto val : lst )
+        for ( auto const& val : lst )       
         {
             push_back(val);
         }
     }
 
     template<typename T>
-    void List<T>::push_front(T value)
+    void List<T>::push_front(T const& value) 
     {
         Node * old_first { head->next.get() };
-        head->next = std::make_unique<Node>(value, head.get(), head->next.release());
+        head->next = std::make_unique<Node>(value, head.get(), head->next.release());   
         old_first->prev = head->next.get();
         ++sz;
     }
 
     template<typename T>
-    void List<T>::push_back(T value)
+    void List<T>::push_back(T const& value)
     {
         Node * old_last { tail->prev };    
         old_last->next.release();    
@@ -135,6 +134,7 @@ namespace List_NS
     }
 
     template<typename T>
+    // I c++20 krävs inte typename före returtyp
     typename List<T>::List_Iterator List<T>::begin()
     {
         return List<T>::List_Iterator{head->next.get()};
@@ -156,12 +156,12 @@ namespace List_NS
 
 
     template<typename T>
-    bool List<T>::List_Iterator::operator==(List<T>::List_Iterator const& rhs)
+    bool List<T>::List_Iterator::operator==(List<T>::List_Iterator const& rhs) const
     {
         return curr_ptr == rhs.curr_ptr;
     }
     template<typename T>
-    bool List<T>::List_Iterator::operator!=(List<T>::List_Iterator const& rhs)
+    bool List<T>::List_Iterator::operator!=(List<T>::List_Iterator const& rhs) const
     {
         return !(*this == rhs);
     }
